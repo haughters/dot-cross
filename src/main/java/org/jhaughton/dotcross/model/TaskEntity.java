@@ -23,6 +23,9 @@ public class TaskEntity {
         this.dateCompleted = dateCompleted;
     }
 
+    public TaskEntity() {
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

@@ -4,14 +4,24 @@ import java.util.Date;
 
 public class Task {
 
+    private long id;
     private String name;
     private String description;
     private Date dateCompleted;
 
-    public Task(String name, String description, Date dateCompleted) {
+    public Task(long id, String name, String description, Date dateCompleted) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.dateCompleted = dateCompleted;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
