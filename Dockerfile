@@ -2,7 +2,6 @@ FROM openjdk:8-alpine as build
 WORKDIR /workspace/app
 
 COPY gradlew .
-COPY .gradle .gradle
 COPY settings.gradle .
 COPY gradle gradle
 COPY build.gradle .
