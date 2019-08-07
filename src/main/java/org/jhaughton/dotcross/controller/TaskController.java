@@ -1,14 +1,18 @@
 package org.jhaughton.dotcross.controller;
 
-import org.jhaughton.dotcross.model.Task;
 import org.jhaughton.dotcross.model.TaskEntity;
 import org.jhaughton.dotcross.repository.TaskRepository;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+@RestController()
 public class TaskController {
     private final TaskRepository repository;
 
@@ -16,36 +20,23 @@ public class TaskController {
         this.repository = repository;
     }
 
-    @PostMapping("/create")
-    public String create(@RequestBody Task task) {
-        repository.save(new TaskEntity(task.getName(), task.getDescription(), task.getDateCompleted()));
-        return "Customer is created";
+    @PostMapping("/task/create")
+    public ResponseEntity<String> create(@RequestBody TaskEntity task) {
+        repository.save(task);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(CONTENT_TYPE, APPLICATION_JSON_VALUE);
+        return new ResponseEntity<>("{\"id\":\"" + task.getId() + "\"}", headers, CREATED);
     }
 
-    @GetMapping("/findall")
-    public List<Task> findAll(){
-        List<TaskEntity> taskEntities = repository.findAll();
-        List<Task> tasks = new ArrayList<>();
-        for (TaskEntity taskEntity : taskEntities) {
-            tasks.add(new Task(taskEntity.getId(), taskEntity.getName(), taskEntity.getDescription(), taskEntity.getDateCompleted()));
-        }
-        return tasks;
+    @GetMapping("/tasks")
+    public List<TaskEntity> findAll(){
+        return repository.findAll();
     }
 
-    @RequestMapping("/search/{id}")
+    @RequestMapping("/task/{id}")
     public String search(@PathVariable long id){
         String task = "";
         task = repository.findById(id).toString();
         return task;
-    }
-
-    @RequestMapping("/searchbyname/{name}")
-    public List<Task> fetchDataByFirstName(@PathVariable String name){
-        List<TaskEntity> taskEntities = repository.findByName(name);
-        List<Task> tasks = new ArrayList<>();
-        for (TaskEntity taskEntity : taskEntities) {
-            tasks.add(new Task(taskEntity.getId(), taskEntity.getName(), taskEntity.getDescription(), taskEntity.getDateCompleted()));
-        }
-        return tasks;
     }
 }

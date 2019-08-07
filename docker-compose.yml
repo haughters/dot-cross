@@ -7,3 +7,13 @@ services:
     ports:
       - "5432:5432"
 
+  webapp:
+    depends_on:
+      - database
+    build: .
+    image: dotcross:latest
+    ports:
+      - "9090:9090"
+    environment:
+      DB_URL: "database"
+
