@@ -26,7 +26,7 @@ jobs:
           key: v1-dependencies-{{ checksum "build.gradle" }}
       - run: gradle test
   dockerbuild:
-    executor: docker-publisher
+    executor: docker
     steps:
       - checkout
       - setup_remote_docker
@@ -42,7 +42,7 @@ jobs:
           paths:
             - ./image.tar
   publish:
-    executor: docker-publisher
+    executor: docker
     steps:
       - attach_workspace:
           at: /tmp/workspace
