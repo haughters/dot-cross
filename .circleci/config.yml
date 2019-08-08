@@ -18,9 +18,11 @@ jobs:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle test
       - run:
-          name: Publish Docker Image to Docker Hub
+          name: Build and Test
+          command: gradle test
+      - run:
+          name: Build and Push Docker Image
           command: |
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-            gradle dockerBuild -Ppush
+            gradle buildDocker -Ppush
