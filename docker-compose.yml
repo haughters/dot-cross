@@ -10,7 +10,6 @@ services:
   webapp:
     depends_on:
       - database
-    build: .
     image: dotcross:latest
     ports:
       - "9090:9090"
